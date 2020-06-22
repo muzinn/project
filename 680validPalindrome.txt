@@ -1,0 +1,37 @@
+/*给定一个非空字符串 s，最多删除一个字符。判断是否能成为回文字符串。
+输入: "aba"
+输出: True
+输入: "abca"
+输出: True
+解释: 你可以删除c字符。
+思路：如果首尾指针对应得字符相等就继续比较，如果不相等，有两种策略，
+一种是删除左指针指向的字符或者删除右指针指向的字符，然后判断首尾指针
+中间的子字符串是否回文。
+*/
+
+class Solution {
+public:
+    bool checkPalindrome(const string& s, int low, int high) {
+        for (int i = low, j = high; i < j; i ++, j --) {
+            if (s[i] != s[j]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    bool validPalindrome(string s) {
+        int low = 0, high = s.size() - 1;
+        while (low < high) {
+            char c1 = s[low], c2 = s[high];
+            if (c1 == c2) {
+                low ++;
+                high --;
+            }
+            else {
+                return checkPalindrome(s, low, high - 1) || checkPalindrome(s, low + 1, high);
+            }
+        }
+        return true;
+    }
+};

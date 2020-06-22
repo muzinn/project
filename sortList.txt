@@ -1,0 +1,30 @@
+/**
+排序链表
+在 O(n log n) 时间复杂度和常数级空间复杂度下，对链表进行排序。
+ */
+
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* sortList(ListNode* head) {
+		ListNode result(0);
+        ListNode* pr_result=&result;
+		if(!head)
+			return NULL;
+		vector<int> temp;
+		while(head)
+		{
+			temp.push_back(head->val);
+			head=head->next;
+		}
+		
+    }
+};

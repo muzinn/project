@@ -1,0 +1,60 @@
+
+/*
+给出两个 非空 的链表用来表示两个非负的整数。其中，它们各自的位数是按照 逆序 的方式存储的，并且它们的每个节点只能存储 一位 数字。
+
+如果，我们将这两个数相加起来，则会返回一个新的链表来表示它们的和。
+
+您可以假设除了数字 0 之外，这两个数都不会以 0 开头。
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/add-two-numbers
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+*/
+/*
+思路：
+创建一个新链表add 并new 一个头结点，再创建一个链表的指针l3，
+将l1+l2各个位上的值分别相加，并存储在add链表的相应位置(先new新结点)，
+若l1+l2最高位仍有进位，则再new一个新节点。否则直接返回链表的第一个结点就好。*/
+/*
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        ListNode* add=new ListNode(0);   //创建新链表及头结点
+        ListNode* l3=add;           //链表指针
+        int nret=0;                   //存储进位
+        while(l1||l2)
+        {
+            int ret=0;        //存储两个数相加的结果，每次ret都要更新
+            if(l1)
+            {
+                ret+=l1->val;     //将l1的值放在ret里
+                l1=l1->next;        //l1的指针向后移
+            }
+            if(l2)
+            {
+                ret+=l2->val;       //将l2的值放在ret里
+                l2=l2->next;        //l2的指针向后移
+            }
+            ret+=nret;           //再加上进位的值
+            if(ret>9)             //如果ret需要进位进位，则修改ret和nret的值  
+            {
+                ret-=10;         
+                nret=1;
+            }
+            else nret=0;       //如果ret没有发生进位，则nret更新为0
+            l3->next=new ListNode(1);      //为add链表创建下一个节点
+            l3=l3->next;                      //使指针指向下一个节点
+            l3->val=ret;                 //将ret存储在节点里
+        }
+        if(nret!=0)      //如果两数加完高位仍有进位，则新建结点存储进位
+            l3->next=new ListNode(1);
+         return add->next;     //否则直接返回add链表的第一个值
+    }
+};

@@ -1,0 +1,27 @@
+/**
+反转一个单链表。*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+ 
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+		ListNode* newhead=NULL;
+		if(!head)
+			return NULL;
+		while(head)
+		{
+			ListNode* head_next=head->next;
+			head->next=newhead;
+			newhead=head;
+			head=head_next;
+		}
+		return newhead;
+    }
+};

@@ -1,0 +1,123 @@
+/*给定一个链表，判断链表中是否有环。
+
+为了表示给定链表中的环，我们使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 pos 是 -1，则在该链表中没有环。
+
+?
+
+。
+*/
+/*我们可以通过检查一个结点此前是否被访问过来判断链表是否为环形链表。常用的方法是使用哈希表。
+我们遍历所有结点并在哈希表中存储每个结点的引用（或内存地址）。
+如果当前结点为空结点 null（即已检测到链表尾部的下一个结点），
+那么我们已经遍历完整个链表，并且该链表不是环形链表。如果当前结点的引用已经存在于哈希表中，那么返回 true（即该链表为环形链表）。
+
+作者：LeetCode
+链接：https://leetcode-cn.com/problems/linked-list-cycle/solution/huan-xing-lian-biao-by-leetcode/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool hasCycle(ListNode *head) {
+        map<ListNode*,int> a;
+        ListNode *i=head;
+        while(i!=NULL){
+            if(a[i]==1)
+                return true;
+            a[i]++;
+            i=i->next;
+        }
+        return false;
+
+    }
+};
+
+
+
+
+
+ //快慢指针
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool hasCycle(ListNode *head) {
+        //两个运动员位于同意起点head
+        ListNode* faster=head;  //快的运动员
+        ListNode* slower=head;  //慢的运动员
+
+        if (head == NULL)  //输入链表为空，必然不是循环链表
+            return false;
+
+        while (faster&&faster->next)
+        {
+            faster = faster->next->next;  
+            slower = slower->next;  //慢的运动员每次跑一步 
+            if (faster == slower)  //他们在比赛中相遇了
+                return true;  //可以断定是环形道，直道不可能相遇
+        }
+	    return false;  //快的运动员到终点了，那就是直道，绕圈跑不会有终点
+
+    }
+};
+/*
+
+给定一个链表，返回链表开始入环的第一个节点。 如果链表无环，则返回 null。
+
+为了表示给定链表中的环，我们使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 pos 是 -1，则在该链表中没有环。
+
+说明：不允许修改给定的链表
+*/
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+        ListNode* faster=head; 
+        ListNode* slower=head;  
+        ListNode* meet=NULL; 
+        if (head == NULL)  //输入链表为空，必然不是循环链表
+            return NULL;
+        while (faster&&faster->next)
+        {
+            faster = faster->next->next;  
+            slower = slower->next;  //慢的运动员每次跑一步 
+            if (faster == slower)  //他们在比赛中相遇了
+            {
+                meet=faster;  //可以断定是环形道，直道不可能相遇
+                break;
+            } 
+        }
+        while(head&&meet)
+        {         
+            if(meet==head)
+            {
+                return head;
+            }
+            head=head->next;
+            meet=meet->next;
+        }
+	    return NULL; 
+    }
+};
+

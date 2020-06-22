@@ -1,0 +1,107 @@
+/**
+把链表分成两半，然后把后面的一半反转，然后再把两半的链表拼接在一起
+ */
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {  
+public:
+	ListNode* reverse(ListNode* head)
+    {
+        ListNode *cur = head, *prev = nullptr;
+        while(cur)
+        {
+            ListNode *nxt = cur->next;
+            cur->next = prev;
+            prev = cur;
+            cur = nxt;
+        }
+        return prev;
+    }
+    void reorderList(ListNode* head) {
+        ListNode* dummy = new ListNode(0);
+        dummy->next = head;
+        auto slow = dummy, fast = dummy;
+        while(fast!= nullptr && fast->next != nullptr)
+        {
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        //奇数是中间，偶数是中间的左边 
+        auto left = head, right = slow->next;//左边的多右边少
+        slow->next = nullptr;
+        right = reverse(right);
+        auto pt = dummy;
+        while(left || right)
+        {
+            if(left)
+            {
+                dummy->next = left;
+                left = left->next;
+                dummy = dummy->next;
+            }
+            if(right)
+            {
+                dummy->next = right;
+                right = right->next;
+                dummy = dummy->next;
+            }
+        }
+    }
+};
+
+/**
+首先使用快慢指针找到链表的中点，将链表分成两部分。
+然后将中点往后的链表倒序排列，最后将倒序排列的链表间隔插入中点前面
+的链表中即可
+ */
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void reorderList(ListNode* head) {
+         if (!head || !head->next || !head->next->next) return;
+       ListNode*slow=head,*fast=head;
+        while(fast->next&&fast->next->next)
+        {
+            slow=slow->next;
+            fast=fast->next->next;
+        }
+        ListNode* mid=slow->next;
+        slow->next=NULL;
+        ListNode* last=NULL;
+        while(mid)
+        {
+            ListNode* t=mid->next;
+            mid->next=last;
+            last=mid;
+            mid=t;
+        }
+        ListNode*first=head;
+        while(last)
+        {
+            ListNode* t=first->next;
+            first->next=last;
+            last=last->next;
+            first->next->next=t;
+            first=t;
+            
+        }
+    }
+};
+————————————————
+版权声明：本文为CSDN博主「spark-meng」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/qq_43387999/article/details/88381033
